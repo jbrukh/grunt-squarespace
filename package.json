@@ -1,0 +1,10 @@
+{
+  "name": "grunt-squarespace",
+  "description": "Development environment for Squarespace templates.",
+  "author": "jbrukh@gmail.com",
+  "dependencies": {
+    "grunt": "0.x.x",
+    "grunt-git": "0.2.x"
+  },
+  "engine": "node >= 0.10"
+}
