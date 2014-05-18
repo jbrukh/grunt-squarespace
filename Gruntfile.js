@@ -11,16 +11,8 @@ module.exports = function(grunt) {
         'Please create a squarespace.json file.'),
 
       clean: {
-        /* make sure to warn before nuking repo */
-        repo: {
-          src: (function() {
-            grunt.file.exists(repoDir) && grunt.fail.warn('Really want to nuke the repo?');
-            return [repoDir]
-          })()
-        },
-
-        build: {
-          src: ['build']
+        compile: {
+          src: ['lib', 'build']
         }
       },
 
@@ -35,8 +27,17 @@ module.exports = function(grunt) {
       },
 
       gitpush: {
-        push: {
+        repo: {
           options: {
+            branch: 'master'
+          }
+        }
+      },
+
+      gitpull: {
+        repo: {
+          options: {
+            directory: repoDir,
             branch: 'master'
           }
         }
@@ -61,7 +62,11 @@ module.exports = function(grunt) {
   grunt.registerTask(
     'clone', 
     'Clone the Squarespace git repo.',
-    ['clean:repo', 'gitclone:repo']
+    function() {
+      grunt.file.exists(repoDir) && grunt.fail.warn('Sure you want to nuke the repo?');
+      grunt.file.delete(repoDir);
+      grunt.task.run('gitclone:repo');
+    }
   );
 
   grunt.registerTask(
@@ -69,4 +74,6 @@ module.exports = function(grunt) {
     'Collect, minify, and copy all bower assets.',
     ['bower']
   );
+
+  grunt.registerTask('default', 'Default task.', ['compile']);
 };
